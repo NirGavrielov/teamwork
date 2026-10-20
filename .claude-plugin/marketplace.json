@@ -1,0 +1,15 @@
+{
+  "name": "teamwork",
+  "description": "The teamwork plugin: a team lead plus expert subagents for Claude Code.",
+  "owner": {
+    "name": "Nir Gavrielov"
+  },
+  "plugins": [
+    {
+      "name": "teamwork",
+      "description": "Run a goal with a team: Claude acts as team lead, plans, delegates to expert subagents, verifies, and reports.",
+      "source": "./",
+      "category": "productivity"
+    }
+  ]
+}

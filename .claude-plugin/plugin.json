@@ -1,0 +1,9 @@
+{
+  "name": "teamwork",
+  "version": "0.1.0",
+  "description": "Run a goal with a team: Claude acts as team lead, plans, delegates to expert subagents (PM, engineer, UI/UX, QA, data/eval, security, devops), verifies, and reports.",
+  "author": {
+    "name": "Nir Gavrielov"
+  },
+  "keywords": ["team", "agents", "delegation", "workflow", "qa"]
+}

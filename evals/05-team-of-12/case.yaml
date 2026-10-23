@@ -1,0 +1,28 @@
+schema_version: "1.0"
+name: 05-team-of-12
+description: A size larger than the roster proceeds without asking, says so, offers /teamwork:hire, and lists no idle member (spec 12, F1, bug oversize-team-pads-idle-member).
+tags: [teamwork, plan-only, sizing]
+execution:
+  prompt: "/teamwork add a hello-world Python CLI with a unit test, team of 12. Stop after writing and showing the plan; do not delegate."
+  max_turns: 20
+  timeout_seconds: 300
+  allowed_tools: [Read, Glob, Grep, Skill, Write, Edit, Bash, Agent]
+runs: 1
+graders:
+  - name: plan-in-job-dir
+    type: file_exists
+    path: ".teamwork/jobs/*/plan.md"
+  - name: mentions-hire
+    type: regex
+    target: last_message
+    pattern: '/teamwork:hire'
+  - name: no-delegation
+    type: tool_used
+    tool: Agent
+    min: 0
+    max: 0
+    arm: both
+  - name: no-idle-members
+    type: llm
+    focus: last_message
+    criteria: "All of these hold: (1) the reply says the roster has fewer members than the 12 requested; (2) every member listed on the team has at least one real task (members not used may be mentioned as not used, but none is on the team only to fill the size); (3) the team contains only teamwork roles, not general-purpose, Explore, Plan, claude-code-guide or statusline-setup; (4) the reply does not stop to ask the user about the size."

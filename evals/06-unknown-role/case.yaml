@@ -1,0 +1,29 @@
+schema_version: "1.0"
+name: 06-unknown-role
+description: A role not on the roster is not invented; the lead offers /teamwork:hire or the nearest role and waits on that point (spec 15).
+tags: [teamwork, plan-only, roster]
+execution:
+  prompt: "/teamwork draft a privacy policy page for a small web app, with a legal reviewer. Stop after writing and showing the plan; do not delegate."
+  max_turns: 20
+  timeout_seconds: 300
+  allowed_tools: [Read, Glob, Grep, Skill, Write, Edit, Bash, Agent]
+runs: 1
+graders:
+  - name: offers-hire
+    type: regex
+    target: last_message
+    pattern: '/teamwork:hire'
+  - name: no-delegation
+    type: tool_used
+    tool: Agent
+    min: 0
+    max: 0
+    arm: both
+  - name: no-agent-file-created
+    type: file_exists
+    path: ".claude/agents/**"
+    exists: false
+  - name: not-invented
+    type: llm
+    focus: last_message
+    criteria: "The reply says a legal reviewer is not on the team, offers /teamwork:hire and/or the nearest existing role, and waits for the user's answer on that point. It does not assign tasks to an invented legal reviewer."

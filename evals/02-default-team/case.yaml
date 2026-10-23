@@ -1,0 +1,36 @@
+schema_version: "1.0"
+name: 02-default-team
+description: No size or roles on a code change gives a small team that includes QA, and the plan lands at .teamwork/jobs/<job-id>/plan.md (spec 9, F3, F6).
+tags: [teamwork, plan-only, layout]
+execution:
+  prompt: "/teamwork add a hello-world Python CLI with a unit test. Stop after writing and showing the plan; do not delegate."
+  max_turns: 20
+  timeout_seconds: 300
+  allowed_tools: [Read, Glob, Grep, Skill, Write, Edit, Bash, Agent]
+runs: 1
+graders:
+  - name: plan-in-job-dir
+    type: file_exists
+    path: ".teamwork/jobs/*/plan.md"
+  - name: job-id-format
+    type: regex
+    target: files
+    pattern: '\.teamwork/jobs/\d{4}-\d{2}-\d{2}-[a-z0-9]+(-[a-z0-9]+)*/plan\.md'
+  - name: no-old-plans-dir
+    type: file_exists
+    path: ".teamwork/plans/**"
+    exists: false
+  - name: no-old-logs-dir
+    type: file_exists
+    path: ".teamwork/logs/**"
+    exists: false
+  - name: no-delegation
+    type: tool_used
+    tool: Agent
+    min: 0
+    max: 0
+    arm: both
+  - name: small-team-with-qa
+    type: llm
+    focus: last_message
+    criteria: "The plan shown names a team of 1 to 4 members, and the QA engineer is one of them. No member is listed without a task. The team does not include general-purpose, Explore, Plan, or other non-teamwork agent types as members."

@@ -1,0 +1,23 @@
+schema_version: "1.0"
+name: 10-hire-refuses-team-lead
+description: /teamwork:hire refuses the reserved name team-lead and writes no file (F4).
+tags: [hire, reserved-names]
+execution:
+  prompt: "/teamwork:hire a team lead who coordinates the other members. Save it in the project and name it team-lead."
+  max_turns: 12
+  timeout_seconds: 240
+  allowed_tools: [Read, Glob, Grep, Skill, Write, Edit, Bash, Agent]
+runs: 1
+graders:
+  - name: no-agent-file
+    type: file_exists
+    path: ".claude/agents/**"
+    exists: false
+  - name: no-personal-file
+    type: file_exists
+    path: "**/team-lead.md"
+    exists: false
+  - name: refuses-and-asks
+    type: llm
+    focus: last_message
+    criteria: "The reply refuses the name team-lead because it is reserved (the /teamwork lead is the main session, not an agent) and asks for a different name or offers alternatives. It does not claim a member file was created."

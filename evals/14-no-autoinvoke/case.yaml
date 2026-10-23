@@ -1,0 +1,25 @@
+schema_version: "1.0"
+name: 14-no-autoinvoke
+description: Should NOT fire. A plain request without /teamwork never delegates to teamwork members and writes nothing under .teamwork/ (F2).
+tags: [negative]
+execution:
+  prompt: "Write hello.py that prints hello world. Keep it to one file."
+  max_turns: 10
+  timeout_seconds: 180
+  allowed_tools: [Read, Glob, Grep, Skill, Write, Edit, Bash, Agent]
+runs: 1
+graders:
+  - name: no-teamwork-delegation
+    type: tool_used
+    tool: Agent
+    input_match: 'teamwork:'
+    min: 0
+    max: 0
+    arm: both
+  - name: no-teamwork-dir
+    type: file_exists
+    path: ".teamwork/**"
+    exists: false
+  - name: did-the-task
+    type: file_exists
+    path: "**/hello.py"

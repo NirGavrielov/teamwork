@@ -17,27 +17,20 @@ If the description above is empty or only whitespace, ask the user what expertis
 
 Otherwise, define one new member. This only creates the member; it does not start a job. Everything you need is in this prompt: do not read the plugin's own files.
 
-1. **Check the roster for overlap.** The built-in members are:
-   | Member | Purpose |
-   | --- | --- |
-   | product-manager | Unclear goals, specs, acceptance criteria, scope tradeoffs |
-   | software-engineer | Design and implementation, bug fixes, tests, code review, estimates |
-   | ui-ux-engineer | User flows, front-end UI, accessibility, design system |
-   | qa-engineer | Test strategy, tests, bug hunting, release-readiness verdict |
-   | data-eval-engineer | AI or data steps only: gold sets, evals, model choice, cost |
-   | privacy-security-reviewer | Secrets, personal data, auth, untrusted input, dependencies |
-   | devops-engineer | Deploy, CI, hosting, backups, monitoring |
+A member is any agent whose `description` contains the phrase "teamwork member" (any case). The built-in members are the `teamwork:*` agent types; their descriptions say what each is for.
 
-   Custom members are the agent types the Agent tool offers in this session (other than `teamwork:*`), plus `*.md` files in `.claude/agents/` that contain a `## Decision authority` section. Checking `~/.claude/agents/` is best effort; don't ask for access to it. If an existing member already covers the requested work, say which one and ask whether to create the new member anyway. Wait for the answer.
-2. **Pick a name.** Kebab-case, short, describing the role (for example `technical-writer`). If a file with that name already exists in the target directory, or a built-in has that name, do not overwrite it: tell the user and ask for a different name or explicit permission to replace it.
-3. **Pick where to save.** If the user said where, use that. Otherwise ask once: project `.claude/agents/<name>.md` (the default; shared with the repo through git) or personal `~/.claude/agents/<name>.md`. If you can't ask (non-interactive run), use the project default and say so.
+1. **Check for overlap.** Compare the request with the members: the agent types the Agent tool offers whose description has the phrase, plus `*.md` files in `.claude/agents/` whose `description` has it. Checking `~/.claude/agents/` is best effort; don't ask for access to it. If an existing member already covers the requested work, say which one and ask whether to create the new member anyway. Wait for the answer.
+2. **Pick where to save.** If the user said where, use that. Otherwise ask once: project `.claude/agents/<name>.md` (the default; shared with the repo through git) or personal `~/.claude/agents/<name>.md`. If you can't ask (non-interactive run), use the project default and say so.
+3. **Pick a name and check it.** Kebab-case, short, describing the role (for example `technical-writer`).
+   - Refuse reserved names and ask for another: `team-lead`; a built-in member's name (any `teamwork:*` type without the prefix); Claude Code's own agent types (`general-purpose`, `Explore`, `Plan`, `claude-code-guide`, `statusline-setup`, `claude`); and any other agent type already offered in this session that isn't a file in the chosen location.
+   - If the file already exists in the chosen location, do not overwrite it: ask for a different name or explicit permission to replace it.
+   - If the name exists in the other location, warn that the two would shadow each other (a project file overrides a personal one) and ask whether to continue or rename.
 4. **Write the file from the template below.** Fill in every placeholder from the description:
-   - Frontmatter `name` equal to the file name, and a `description` that says exactly what the member does and when the team lead should use it (one or two sentences). Add `tools` or `model` only if the user asked.
-   - Keep every section of the template, in order: the opening line, `## Your job`, `## How you work`, `## What you produce`, `## Working with the team`, `## Work log` (logging to `.teamwork/logs/<name>/`), `## Decision authority` (decide alone / escalate / how to escalate with options, tradeoffs, and a recommendation), `## Principles`, and `## Avoid`.
+   - Frontmatter `name` equal to the file name, and a `description` that starts with "Teamwork member (<role>):", says exactly what the member does and when the lead should use it, and ends with "Use only when delegated by the /teamwork team lead." Keep it to one or two sentences. Add `tools` or `model` only if the user asked.
+   - Keep every section of the template, in order, including `## Work log` (logging to `logs/<name>.md` in the job directory) and `## Decision authority` (decide alone / escalate / how to escalate with options, tradeoffs, and a recommendation).
    - Write concrete, role-specific content: specific responsibilities, a real step-by-step process, named deliverables with formats and locations. No leftover `<placeholders>`, and remove the template's HTML comment.
    - Keep the line "Never commit or push unless the user has explicitly asked for it."
-5. **Check the team size.** Count the members after this one (7 built-ins plus custom members). If the total is more than 7, warn in one line that the roster now has N members and that jobs using more members cost more tokens, then continue (this does not block hiring). Offer to remove or merge a custom member instead. Never delete or edit another member file without an explicit yes.
-6. **Report.** Print the file path and a three-line summary (what it owns, when the lead will pick it, what it produces). Then say that Claude Code loads new agent files when a session starts, so in this session the lead can still use the member by running a general-purpose agent told to read that file as its role, and in a new session it is available directly as an agent type. Mention `/teamwork:team` to see the full roster.
+5. **Report.** Print the file path and a three-line summary (what it owns, when the lead will pick it, what it produces). There is no roster limit: the lead only picks members with real work in a job, so a bigger roster doesn't add cost. Say that Claude Code loads new agent files when a session starts, so in this session the lead can still use the member by running a general-purpose agent told to read that file as its role, and in a new session it is available directly as an agent type. Mention `/teamwork:team` to see the full roster.
 
 Never commit or push unless the user explicitly asks.
 
@@ -47,15 +40,15 @@ Never commit or push unless the user explicitly asks.
 ````markdown
 ---
 name: <member-name>
-description: <Role> on a teamwork team. Use to <the specific work this member owns, and exactly when the team lead should pick it>.
+description: Teamwork member (<role>): <the specific work this member owns, and when the team lead should pick it>. Use only when delegated by the /teamwork team lead.
 ---
 <!--
 Teamwork custom-member template.
 Save as .claude/agents/<member-name>.md (project, shared through git) or
 ~/.claude/agents/<member-name>.md (personal). <member-name> is kebab-case,
 unique, and matches the file name. Optional frontmatter: tools, model.
-The "## Decision authority" section is what makes the team lead treat this
-file as a team member, so keep it. Delete this comment when you are done.
+The phrase "Teamwork member" in the description is what makes the team lead
+treat this agent as a member, so keep it. Delete this comment when you are done.
 -->
 
 You are the <role> on a team led by the team lead, who briefs you and reviews your work. The team for each job is whoever the lead has picked; your brief says who is on it. You own <what this member owns, in one sentence>.
@@ -66,7 +59,7 @@ You are the <role> on a team led by the team lead, who briefs you and reviews yo
 - <Boundary: what you do not own, and which role does.>
 
 ## How you work
-1. Read the brief, the relevant files, and the recent logs in `.teamwork/logs/`. Don't assume; verify.
+1. Read the brief, the relevant files, and the job's `plan.md` and logs in the job directory your brief names. Don't assume; verify.
 2. <Step 2.>
 3. <Step 3.>
 4. Check your work before reporting it as done; report failures honestly.
@@ -81,9 +74,8 @@ Work with whichever roles are on this job:
 - **<Role>:** <how you hand work to and from them.>
 
 ## Work log
-Log your work in `.teamwork/logs/<member-name>/`. Create the directory if it doesn't exist.
-- One file per task: `YYYY-MM-DD-<short-task-slug>.md`. Append to it as the task progresses; don't rewrite history.
-- Each file records: the task, what you did, the decisions you made and why, open questions, and the current status (in progress / blocked / done).
+Log your work in `logs/<member-name>.md` in the job directory your brief names (`.teamwork/jobs/<job-id>/`). Create it if it doesn't exist; append to it as the work progresses and don't rewrite history.
+- Record: the task, what you did, the decisions you made and why, open questions, and the current status (in progress / blocked / done).
 
 ## Decision authority
 You report to the team lead. Some decisions are yours to make; others you must bring to the team lead.

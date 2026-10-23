@@ -30,15 +30,16 @@
   <text class="b" x="130" y="154">1  Team lead restates the goal and plans</text>
   <text class="m" x="130" y="177">main session; tasks, owners, order, done-when</text>
   <path class="ct" d="M610,160 H652"/>
-  <rect class="chip" x="652" y="134" width="216" height="52" rx="8"/>
-  <text class="f" x="666" y="156">.teamwork/plans/</text>
-  <text class="m" x="666" y="176">the plan, shown to you</text>
+  <rect class="chip" x="652" y="130" width="216" height="62" rx="8"/>
+  <text class="f" x="666" y="150">.teamwork/jobs/&lt;job-id&gt;/</text>
+  <text class="f" x="666" y="168">plan.md</text>
+  <text class="m" x="666" y="185">the plan, shown to you</text>
   <path class="ln" d="M360,192 V222" marker-end="url(#a)"/>
 
   <!-- 2 roster -->
   <rect class="lead" x="110" y="224" width="500" height="84" rx="12"/>
   <text class="b" x="130" y="250">2  Team lead picks the team from the roster</text>
-  <text class="m" x="130" y="273">7 built-in roles + custom members in .claude/agents/</text>
+  <text class="m" x="130" y="273">built-in members + custom members in .claude/agents/</text>
   <text class="m" x="130" y="294">your size and roles are honored; else the smallest fit</text>
   <path class="ct" d="M610,266 H652"/>
   <rect class="chip" x="652" y="240" width="216" height="52" rx="8"/>
@@ -54,22 +55,22 @@
   <g>
     <rect class="mem" x="120" y="410" width="156" height="86" rx="10"/>
     <text class="b" x="130" y="432" style="font-size:14px">product-manager</text>
-    <text class="f" x="130" y="454">.teamwork/logs/</text>
-    <text class="f" x="130" y="474">product-manager/</text>
+    <text class="m" x="130" y="454" style="font-size:13px">own task,</text>
+    <text class="m" x="130" y="474" style="font-size:13px">own log file</text>
     <rect class="mem" x="282" y="410" width="156" height="86" rx="10"/>
     <text class="b" x="292" y="432" style="font-size:14px">software-engineer</text>
-    <text class="f" x="292" y="454">.teamwork/logs/</text>
-    <text class="f" x="292" y="474">software-engineer/</text>
+    <text class="m" x="292" y="454" style="font-size:13px">own task,</text>
+    <text class="m" x="292" y="474" style="font-size:13px">own log file</text>
     <rect class="mem" x="444" y="410" width="156" height="86" rx="10"/>
     <text class="b" x="454" y="432" style="font-size:14px">ui-ux-engineer</text>
-    <text class="f" x="454" y="454">.teamwork/logs/</text>
-    <text class="f" x="454" y="474">ui-ux-engineer/</text>
+    <text class="m" x="454" y="454" style="font-size:13px">own task,</text>
+    <text class="m" x="454" y="474" style="font-size:13px">own log file</text>
   </g>
   <path class="ct" d="M610,376 H652"/>
   <rect class="chip" x="652" y="342" width="216" height="74" rx="8"/>
-  <text class="f" x="666" y="365">.teamwork/logs/</text>
-  <text class="f" x="666" y="384">&lt;role&gt;/</text>
-  <text class="m" x="666" y="406">one log folder per member</text>
+  <text class="f" x="666" y="365">.teamwork/jobs/&lt;job-id&gt;/</text>
+  <text class="f" x="666" y="384">logs/&lt;member&gt;.md</text>
+  <text class="m" x="666" y="406">one log file per member</text>
   <path class="ln" d="M360,504 V528" marker-end="url(#a)"/>
 
   <!-- 4 review -->
@@ -93,8 +94,8 @@
   <text class="m" x="130" y="796">nothing is committed or pushed unless you ask</text>
   <path class="ct" d="M610,768 H652"/>
   <rect class="chip" x="652" y="732" width="216" height="74" rx="8"/>
-  <text class="f" x="666" y="755">.teamwork/logs/</text>
-  <text class="f" x="666" y="774">team-lead/</text>
+  <text class="f" x="666" y="755">.teamwork/jobs/&lt;job-id&gt;/</text>
+  <text class="f" x="666" y="774">logs/team-lead.md</text>
   <text class="m" x="666" y="796">the lead's own log</text>
   <path class="ln" d="M360,810 V842" marker-end="url(#a)"/>
 

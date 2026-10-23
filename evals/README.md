@@ -9,7 +9,7 @@ The skills use `disable-model-invocation`, so every case is a slash command (`/t
 Copy the plugin somewhere outside your working tree first if you don't want `evals/results/` written into it, then:
 
 ```bash
-claude plugin eval /path/to/claude-teamwork \
+claude plugin eval /path/to/teamwork \
   --ablation none --scaffold --allow-tools Bash Write Edit \
   --model sonnet -j 4 --no-publish
 ```

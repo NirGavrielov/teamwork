@@ -11,7 +11,7 @@ From a git repository (for colleagues):
 /plugin install teamwork@teamwork
 ```
 
-The repository is private: you need read access to it, and Claude Code uses your git credentials (for example `gh auth login`). A full git URL (`https://github.com/NirGavrielov/claude-teamwork.git`) works too. Run `/reload-plugins` (or start a new session) after installing.
+The repository is private: you need read access to it, and git on your machine must be able to clone it without a prompt. The `NirGavrielov/claude-teamwork` form clones over SSH, so it needs a GitHub SSH key. Without one, run `gh auth setup-git` once (it lets git use your GitHub CLI login) and add the marketplace by its HTTPS URL: `/plugin marketplace add https://github.com/NirGavrielov/claude-teamwork.git`. Run `/reload-plugins` (or start a new session) after installing.
 
 To update later: `/plugin marketplace update teamwork`, then `/plugin update teamwork@teamwork`, then `/reload-plugins`.
 

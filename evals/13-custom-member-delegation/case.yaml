@@ -1,0 +1,32 @@
+schema_version: "1.0"
+name: 13-custom-member-delegation
+description: The lead delegates to a custom member - directly by its agent type, or through general-purpose with the member's tools limit stated (spec 18, F7). Logs land in the job dir (F6).
+tags: [teamwork, full-run, roster, fixtures]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: "/teamwork list the typos in README.md in a new file TYPOS.md, with the doc auditor only. Do not fix README.md."
+  max_turns: 40
+  timeout_seconds: 600
+  allowed_tools: [Read, Glob, Grep, Skill, Write, Edit, Bash, Agent]
+runs: 1
+graders:
+  - name: delegated-to-member
+    type: tool_used
+    tool: Agent
+    input_match: 'doc-auditor'
+    min: 1
+    arm: both
+  - name: direct-or-tools-limit-stated
+    type: regex
+    target: trace
+    pattern: '"subagent_type":"doc-auditor"|Use only these tools:?\W+Read\W+Grep\W+Write'
+  - name: plan-in-job-dir
+    type: file_exists
+    path: ".teamwork/jobs/*/plan.md"
+  - name: lead-log-in-job-dir
+    type: file_exists
+    path: ".teamwork/jobs/*/logs/team-lead.md"
+  - name: deliverable
+    type: file_exists
+    path: "**/TYPOS.md"

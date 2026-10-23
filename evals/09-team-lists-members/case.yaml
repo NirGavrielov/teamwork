@@ -1,0 +1,40 @@
+schema_version: "1.0"
+name: 09-team-lists-members
+description: /teamwork:team lists the built-ins plus a project custom member, never a non-member agent or Claude Code's own agent types, and changes nothing (spec 17, F1, bug personal-agents-dir-not-discovered).
+tags: [team, roster, fixtures]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: "/teamwork:team"
+  max_turns: 12
+  timeout_seconds: 240
+  allowed_tools: [Read, Glob, Grep, Skill, Write, Edit, Bash, Agent]
+runs: 1
+graders:
+  - name: lists-custom-member
+    type: regex
+    target: last_message
+    pattern: '\|\s*\x60?api-reviewer\x60?\s*\|'
+  - name: lists-7-built-ins
+    type: regex
+    target: last_message
+    pattern: '\|\s*\x60?(teamwork:)?(product-manager|software-engineer|ui-ux-engineer|qa-engineer|data-eval-engineer|privacy-security-reviewer|devops-engineer)\x60?\s*\|'
+    match: "count:7"
+  - name: non-member-not-listed
+    type: regex
+    target: last_message
+    pattern: '\|\s*\x60?notes-helper'
+    match: not_contains
+  - name: claude-code-types-not-listed
+    type: regex
+    target: last_message
+    pattern: '\|\s*\x60?(general-purpose|Explore|Plan|claude-code-guide|statusline-setup|claude)\x60?\s*\|'
+    match: not_contains
+  - name: read-only
+    type: file_exists
+    path: "**"
+    exists: false
+  - name: no-access-request
+    type: llm
+    focus: last_message
+    criteria: "The reply is a members table and a one-line count. api-reviewer is shown with source 'project'. The reply does not ask the user to grant access to ~/.claude/agents or any other directory."

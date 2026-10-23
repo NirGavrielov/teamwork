@@ -1,0 +1,31 @@
+schema_version: "1.0"
+name: 16-risk-tier-high
+description: An auth change with no size or roles is tiered High - security review on the team (or /security-review) and the user's explicit OK before done (review rules - risk tiers).
+tags: [teamwork, plan-only, review]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: "/teamwork add password reset by email to the login flow in auth.py. Stop after writing and showing the plan; do not delegate."
+  max_turns: 20
+  timeout_seconds: 300
+  allowed_tools: [Read, Glob, Grep, Skill, Write, Edit, Bash, Agent]
+runs: 1
+graders:
+  - name: plan-in-job-dir
+    type: file_exists
+    path: ".teamwork/jobs/*/plan.md"
+  - name: no-delegation
+    type: tool_used
+    tool: Agent
+    min: 0
+    max: 0
+    arm: both
+  - name: tier-high
+    type: regex
+    target: last_message
+    pattern: 'risk[^\n]{0,40}\bhigh\b|\bhigh\b[^\n]{0,20}risk'
+    flags: i
+  - name: high-risk-gates
+    type: llm
+    focus: last_message
+    criteria: "The shown plan rates the change High risk, puts the privacy and security reviewer on the team or plans a /security-review, and says the user's explicit OK is needed before the job is called done."

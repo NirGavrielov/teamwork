@@ -1,0 +1,5 @@
+description = "Define a new teamwork member from a description"
+prompt = """
+Activate the `hire` skill and follow it exactly, applying the Gemini CLI notes from the teamwork extension's context.
+Where the skill shows $ARGUMENTS, use this description: {{args}}
+"""

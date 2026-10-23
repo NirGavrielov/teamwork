@@ -21,6 +21,55 @@ From a local checkout, without installing:
 claude --plugin-dir /path/to/claude-teamwork
 ```
 
+### Gemini CLI
+
+The repo is also a Gemini CLI extension: `gemini-extension.json` loads the same skills and members, `commands/` adds the slash commands, and `GEMINI.md` maps the Claude Code terms in the skills to Gemini's tools (`generalist` for general-purpose subagents, `read_file` for Read, and so on).
+
+```
+gemini extensions install https://github.com/NirGavrielov/claude-teamwork
+```
+
+From a local checkout, `gemini extensions link /path/to/claude-teamwork` keeps it in sync with your edits. Restart Gemini CLI after installing; update with `gemini extensions update teamwork`.
+
+| Gemini command | Claude Code equivalent |
+| --- | --- |
+| `/teamwork <goal>` | `/teamwork <goal>` |
+| `/teamwork:hire <description>` | `/teamwork:hire <description>` |
+| `/teamwork:team` | `/teamwork:team` |
+
+Members are Gemini subagents (on by default; `experimental.enableAgents` in `settings.json`). `hire` saves new members to `.gemini/agents/`, and `/agents reload` loads them without a restart. There is no `/code-review` or `/security-review` in Gemini: the lead runs reviews through a fresh subagent instead. Project folders must be trusted for project skills and agents to load (Gemini asks on first run, or pass `--skip-trust`). Gemini CLI is being replaced by Antigravity CLI, which this plugin hasn't been tried on.
+
+### Other harnesses (experimental, untested)
+
+The skills are plain `SKILL.md` files, so other agents that support skills and subagents can load them, but the playbook names Claude Code's tools (the Agent tool, `subagent_type`). Elsewhere the lead takes its fallback path: it runs each member through a generic subagent told to read that member's file as its role. Expect rough edges, and check the plan before letting it delegate.
+
+1. Clone the repo and copy the skills to where your harness looks for them:
+
+   ```
+   git clone https://github.com/NirGavrielov/claude-teamwork.git ~/claude-teamwork
+   mkdir -p ~/.agents/skills
+   cp -R ~/claude-teamwork/skills/* ~/.agents/skills/
+   ```
+
+   | Harness | Skills folder | Notes |
+   | --- | --- | --- |
+   | Codex CLI / app | `~/.agents/skills/` | Subagents need `[features] multi_agent = true` in `~/.codex/config.toml`. Start a job with `$teamwork <goal>`, or pick it from `/skills`. |
+   | GitHub Copilot CLI | `~/.agents/skills/` or `~/.copilot/skills/` | |
+   | OpenCode | `~/.config/opencode/skills/` (it also reads `~/.claude/skills/`) | |
+
+2. Put the members where the lead looks for member files, in each project you use it in:
+
+   ```
+   mkdir -p .claude/agents
+   cp ~/claude-teamwork/agents/*.md .claude/agents/
+   ```
+
+   Members you add with `hire` land in the same folder.
+
+3. If your harness doesn't honor `disable-model-invocation`, it may start a job on its own when a request looks like teamwork. Say "don't use teamwork" when you don't want that. `GEMINI.md` shows how to map the Claude Code terms; a similar note in your harness's instructions file helps.
+
+To update, `git pull` in `~/claude-teamwork` and copy again.
+
 ## Quick start
 
 ```

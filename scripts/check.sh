@@ -21,7 +21,11 @@ def frontmatter(path):
     if not m:
         errors.append(f"{path}: no frontmatter")
         return {}
-    return dict(re.findall(r"^([\w-]+):\s*(.*)$", m.group(1), re.M))
+    fm = dict(re.findall(r"^([\w-]+):\s*(.*)$", m.group(1), re.M))
+    for k, v in fm.items():
+        # strict YAML parsers (Gemini CLI) reject an unquoted value containing ": "
+        if ": " in v and v[:1] not in "\"'": errors.append(f"{path}: quote the {k} value, it contains ': '")
+    return {k: v.strip("\"'") for k, v in fm.items()}
 
 skills = sorted(pathlib.Path("skills").glob("*/SKILL.md"))
 agents = sorted(pathlib.Path("agents").glob("*.md"))

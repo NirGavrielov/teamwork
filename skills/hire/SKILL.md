@@ -26,7 +26,7 @@ A member is any agent whose `description` contains the phrase "teamwork member" 
    - If the file already exists in the chosen location, do not overwrite it: ask for a different name or explicit permission to replace it.
    - If the name exists in the other location, warn that the two would shadow each other (a project file overrides a personal one) and ask whether to continue or rename.
 4. **Write the file from the template below.** Fill in every placeholder from the description:
-   - Frontmatter `name` equal to the file name, and a `description` that starts with "Teamwork member (<role>):", says exactly what the member does and when the lead should use it, and ends with "Use only when delegated by the /teamwork team lead." Keep it to one or two sentences. Add `tools` or `model` only if the user asked.
+   - Frontmatter `name` equal to the file name, and a `description` in double quotes (it contains a colon) that starts with "Teamwork member (<role>):", says exactly what the member does and when the lead should use it, and ends with "Use only when delegated by the /teamwork team lead." Keep it to one or two sentences. Add `tools` or `model` only if the user asked.
    - Keep every section of the template, in order, including `## Work log` (logging to `logs/<name>.md` in the job directory) and `## Decision authority` (decide alone / escalate / how to escalate with options, tradeoffs, and a recommendation).
    - Write concrete, role-specific content: specific responsibilities, a real step-by-step process, named deliverables with formats and locations. No leftover `<placeholders>`, and remove the template's HTML comment.
    - Keep the line "Never commit or push unless the user has explicitly asked for it."
@@ -40,7 +40,7 @@ Never commit or push unless the user explicitly asks.
 ````markdown
 ---
 name: <member-name>
-description: Teamwork member (<role>): <the specific work this member owns, and when the team lead should pick it>. Use only when delegated by the /teamwork team lead.
+description: "Teamwork member (<role>): <the specific work this member owns, and when the team lead should pick it>. Use only when delegated by the /teamwork team lead."
 ---
 <!--
 Teamwork custom-member template.

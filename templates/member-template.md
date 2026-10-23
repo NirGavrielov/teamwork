@@ -1,6 +1,6 @@
 ---
 name: <member-name>
-description: Teamwork member (<role>): <the specific work this member owns, and when the team lead should pick it>. Use only when delegated by the /teamwork team lead.
+description: "Teamwork member (<role>): <the specific work this member owns, and when the team lead should pick it>. Use only when delegated by the /teamwork team lead."
 ---
 <!--
 Teamwork custom-member template.

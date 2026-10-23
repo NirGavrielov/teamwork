@@ -1,0 +1,4 @@
+description = "List the teamwork members: built-in and custom"
+prompt = """
+Activate the `team` skill and follow it exactly, applying the Gemini CLI notes from the teamwork extension's context.
+"""

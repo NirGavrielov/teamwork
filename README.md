@@ -7,18 +7,18 @@ A Claude Code plugin that turns one assistant into a small team. Run `/teamwork 
 From a git repository (for colleagues):
 
 ```
-/plugin marketplace add NirGavrielov/claude-teamwork
+/plugin marketplace add NirGavrielov/teamwork
 /plugin install teamwork@teamwork
 ```
 
-The repository is private: you need read access to it, and git on your machine must be able to clone it without a prompt. The `NirGavrielov/claude-teamwork` form clones over SSH, so it needs a GitHub SSH key. Without one, run `gh auth setup-git` once (it lets git use your GitHub CLI login) and add the marketplace by its HTTPS URL: `/plugin marketplace add https://github.com/NirGavrielov/claude-teamwork.git`. Run `/reload-plugins` (or start a new session) after installing.
+The repository is private: you need read access to it, and git on your machine must be able to clone it without a prompt. The `NirGavrielov/teamwork` form clones over SSH, so it needs a GitHub SSH key. Without one, run `gh auth setup-git` once (it lets git use your GitHub CLI login) and add the marketplace by its HTTPS URL: `/plugin marketplace add https://github.com/NirGavrielov/teamwork.git`. Run `/reload-plugins` (or start a new session) after installing.
 
 To update later: `/plugin marketplace update teamwork`, then `/plugin update teamwork@teamwork`, then `/reload-plugins`.
 
 From a local checkout, without installing:
 
 ```
-claude --plugin-dir /path/to/claude-teamwork
+claude --plugin-dir /path/to/teamwork
 ```
 
 ### Gemini CLI
@@ -26,10 +26,10 @@ claude --plugin-dir /path/to/claude-teamwork
 The repo is also a Gemini CLI extension: `gemini-extension.json` loads the same skills and members, `commands/` adds the slash commands, and `GEMINI.md` maps the Claude Code terms in the skills to Gemini's tools (`generalist` for general-purpose subagents, `read_file` for Read, and so on).
 
 ```
-gemini extensions install https://github.com/NirGavrielov/claude-teamwork
+gemini extensions install https://github.com/NirGavrielov/teamwork
 ```
 
-From a local checkout, `gemini extensions link /path/to/claude-teamwork` keeps it in sync with your edits. Restart Gemini CLI after installing; update with `gemini extensions update teamwork`.
+From a local checkout, `gemini extensions link /path/to/teamwork` keeps it in sync with your edits. Restart Gemini CLI after installing; update with `gemini extensions update teamwork`.
 
 | Gemini command | Claude Code equivalent |
 | --- | --- |
@@ -46,9 +46,9 @@ The skills are plain `SKILL.md` files, so other agents that support skills and s
 1. Clone the repo and copy the skills to where your harness looks for them:
 
    ```
-   git clone https://github.com/NirGavrielov/claude-teamwork.git ~/claude-teamwork
+   git clone https://github.com/NirGavrielov/teamwork.git ~/teamwork
    mkdir -p ~/.agents/skills
-   cp -R ~/claude-teamwork/skills/* ~/.agents/skills/
+   cp -R ~/teamwork/skills/* ~/.agents/skills/
    ```
 
    | Harness | Skills folder | Notes |
@@ -61,14 +61,14 @@ The skills are plain `SKILL.md` files, so other agents that support skills and s
 
    ```
    mkdir -p .claude/agents
-   cp ~/claude-teamwork/agents/*.md .claude/agents/
+   cp ~/teamwork/agents/*.md .claude/agents/
    ```
 
    Members you add with `hire` land in the same folder.
 
 3. If your harness doesn't honor `disable-model-invocation`, it may start a job on its own when a request looks like teamwork. Say "don't use teamwork" when you don't want that. `GEMINI.md` shows how to map the Claude Code terms; a similar note in your harness's instructions file helps.
 
-To update, `git pull` in `~/claude-teamwork` and copy again.
+To update, `git pull` in `~/teamwork` and copy again.
 
 ## Quick start
 
@@ -194,7 +194,7 @@ These run only when you type them; Claude does not start them on its own.
 Claude Code treats writes inside a directory loaded with `--plugin-dir` as sensitive and refuses them. So never run test jobs from a folder inside the plugin directory: run them from a sandbox project outside it, with `--plugin-dir` pointing at the repo or at a copy:
 
 ```
-cp -R /path/to/claude-teamwork /tmp/teamwork-copy
+cp -R /path/to/teamwork /tmp/teamwork-copy
 mkdir /tmp/tw-sandbox && cd /tmp/tw-sandbox && git init
 claude --plugin-dir /tmp/teamwork-copy
 ```

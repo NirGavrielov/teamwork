@@ -1,0 +1,31 @@
+schema_version: "1.0"
+name: 15-risk-tier-low
+description: A docs-only change is tiered Low in the plan, which also says how to verify and how to revert (review rules - risk tiers).
+tags: [teamwork, plan-only, review]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: "/teamwork fix the typo in README.md. Stop after writing and showing the plan; do not delegate."
+  max_turns: 20
+  timeout_seconds: 300
+  allowed_tools: [Read, Glob, Grep, Skill, Write, Edit, Bash, Agent]
+runs: 1
+graders:
+  - name: plan-in-job-dir
+    type: file_exists
+    path: ".teamwork/jobs/*/plan.md"
+  - name: no-delegation
+    type: tool_used
+    tool: Agent
+    min: 0
+    max: 0
+    arm: both
+  - name: tier-low
+    type: regex
+    target: last_message
+    pattern: 'risk[^\n]{0,40}\blow\b|\blow\b[^\n]{0,20}risk'
+    flags: i
+  - name: verify-and-revert
+    type: llm
+    focus: last_message
+    criteria: "The shown plan rates the change Low risk (a docs-only change) without adding security review or asking for the user's OK as a high-risk gate, and it says how the fix will be verified and how to revert it."

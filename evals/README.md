@@ -25,7 +25,7 @@ Every case uses `runs: 1`. These are LLM runs, so one failure is a signal to rea
 
 ## Cost and time
 
-Measured 2026-10-23 (Claude Code 2.1.309, `--model sonnet`, `-j 4`, haiku judge): 14 cases in about 90 s wall time, about $1.15 in total ($0.04-0.11 per case; llm judging is under $0.01). Without `-j 4`, expect 5-7 minutes. `--runs 3` triples the cost.
+Measured 2026-10-23 (Claude Code 2.1.309, `--model sonnet`, `-j 4`, haiku judge): the first 14 cases in about 90 s wall time, about $1.15 in total ($0.04-0.11 per case; llm judging is under $0.01). Cases 15-20 add about $0.55 and 30 s. Without `-j 4`, expect 5-7 minutes. `--runs 3` triples the cost.
 
 ## Cases
 
@@ -45,6 +45,12 @@ Measured 2026-10-23 (Claude Code 2.1.309, `--model sonnet`, `-j 4`, haiku judge)
 | 12-same-goal-distinct-ids | same goal as earlier jobs today (fixtures) | a new plan is created (an overwrite doesn't count as created) in a `-2`..`-9` suffixed job dir | F6 |
 | 13-custom-member-delegation | `with the doc auditor only` (full run, fixture member with `tools` and `model`) | delegates to `doc-auditor`, either by agent type or via general-purpose with "Use only these tools: Read, Grep, Write"; plan, lead log and `TYPOS.md` created | spec 18, F6, F7 |
 | 14-no-autoinvoke | plain request, no slash command | no Agent call to `teamwork:*`; no `.teamwork/`; task done | F2 (should-not-fire) |
+| 15-risk-tier-low | docs typo (fixture README) | plan rated Low, no high-risk gates; says how to verify and revert | review rules: risk tiers |
+| 16-risk-tier-high | password reset in `auth.py` | plan rated High; security reviewer or `/security-review`; user's OK before done | review rules: risk tiers |
+| 17-high-risk-explicit-roles | secret in `config.py`, `with the software engineer only` | team kept as requested; rated High; lead names the security check it runs itself | review rules: tiers vs explicit roles |
+| 18-evidence-in-handoff | `with the software engineer only` (full run) | brief asks for the command and its output; report shows commands and results, tier, revert, no-QA line | review rules: evidence |
+| 19-review-findings-triage | automated reviewer findings (fixture, solo) | real bug fixed (file check); false finding dropped; style nit not applied (file check); pre-existing logged; fix verified | review rules: findings |
+| 20-review-converges | contradictory tests (fixture) | at most 4 delegations; tests untouched; no false "passes"; escalates with options | review rules: converge |
 
 Marker phrase used by the graders: "teamwork member" in an agent's `description` (case-insensitive).
 
@@ -55,5 +61,7 @@ Marker phrase used by the graders: "teamwork member" in an agent's `description`
 - The eval sandbox denies writes under `.claude/` (don't-ask mode), even with `--allow-tools Write`. That is why 11 grades the Write call in the trace instead of the file on disk, and why 09 and 13 write their fixture members from `scaffold.sh`.
 - In the eval sandbox, fixture members under `.claude/agents/` were not loaded as agent types (2.1.309), so 09 lists them from the file scan and 13 runs the general-purpose fallback.
 - 13 passes either path of F7: a member loaded at session start is called by its type; a member file that isn't loaded goes through general-purpose and the brief must state the tools limit. The trace shows which path ran.
+- 19 is somewhat flaky (2 of 3 runs fully passed on 2026-10-23): the lead occasionally skips saying how it checked the fix. Treat a single `fix-verified` miss as noise; repeated misses mean the evidence rule needs tightening.
+- 20 can't force real send-back rounds: any impossible task cheap enough for an eval is also visible by reading, so a lead that escalates before delegating passes. The 3-round cap itself is not exercised.
 - Not covered (too costly or not reproducible in the sandbox): a full multi-member job with QA verdict, a personal `~/.claude/agents` member, hire's overwrite and shadowing prompts, `isolation: "worktree"`.
 - Add a case for every fixed bug: a new directory with `case.yaml`, at least one deterministic grader, and a row in the table above.

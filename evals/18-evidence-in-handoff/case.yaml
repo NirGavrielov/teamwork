@@ -1,0 +1,29 @@
+schema_version: "1.0"
+name: 18-evidence-in-handoff
+description: The brief asks the member for runnable evidence, and the final report shows the commands and results, the risk tier and how to revert (review rules - evidence over claims).
+tags: [teamwork, full-run, review]
+execution:
+  prompt: "/teamwork create hello.py that prints hello world, with the software engineer only."
+  max_turns: 40
+  timeout_seconds: 600
+  allowed_tools: [Read, Glob, Grep, Skill, Write, Edit, Bash, Agent]
+runs: 1
+graders:
+  - name: delegated-once-or-more
+    type: tool_used
+    tool: Agent
+    min: 1
+    arm: both
+  - name: brief-asks-for-evidence
+    type: tool_used
+    tool: Agent
+    input_match: '[Cc]ommands? and (its|the|their) output|[Ss]how the command|what (it|they) returned|[Cc]ommands? you ran'
+    min: 1
+    arm: both
+  - name: work-done
+    type: file_exists
+    path: "**/hello.py"
+  - name: report-has-evidence-risk-revert
+    type: llm
+    focus: last_message
+    criteria: "The final report shows the command(s) actually run to verify hello.py (for example python3 hello.py) and what they printed, states the risk tier, says how to revert, and says no QA verdict was given because QA was not on the requested team."

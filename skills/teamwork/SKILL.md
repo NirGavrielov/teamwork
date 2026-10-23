@@ -60,7 +60,7 @@ Team size counts distinct members, never you. A member may take several tasks. I
 | A negative or nonsensical size | Ask for the size in one line. |
 
 ### 4. Write and show the plan
-Pick a job id `YYYY-MM-DD-<short-slug>`; if `.teamwork/jobs/<job-id>/` already exists, append `-2`, `-3`, and so on. That job directory holds everything about this job: `plan.md` (yours), `spec.md` (the product manager's), and `logs/<member>.md` (one per member, including `team-lead`). Write the plan to `plan.md` (create the directories) and show it to the user. Include:
+Pick a job id `YYYY-MM-DD-<short-slug>`; if `.teamwork/jobs/<job-id>/` already exists, append `-2`, `-3`, and so on. That job directory holds everything about this job: `plan.md` (yours), `spec.md` (the product manager's), and `logs/<member>.md` (one per member, including `team-lead`). Write the plan to `plan.md` (create the directories) and show it to the user; you may shorten the rest, but always show the task table with each task's owner and the files it may change. Include:
 - The goal, in one or two sentences, and any decisions you made instead of asking.
 - The risk tier, set by what the change touches, not who writes it:
   | Tier | Examples | Review before done |

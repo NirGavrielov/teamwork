@@ -7,11 +7,13 @@ A Claude Code plugin that turns one assistant into a small team. Run `/teamwork 
 From a git repository (for colleagues):
 
 ```
-/plugin marketplace add <owner>/<repo>
+/plugin marketplace add NirGavrielov/claude-teamwork
 /plugin install teamwork@teamwork
 ```
 
-`<owner>/<repo>` is the GitHub repository that holds this plugin; a full git URL (`https://<git-host>/<owner>/<repo>.git`) works too. Restart Claude Code (or start a new session) after installing.
+The repository is private: you need read access to it, and Claude Code uses your git credentials (for example `gh auth login`). A full git URL (`https://github.com/NirGavrielov/claude-teamwork.git`) works too. Run `/reload-plugins` (or start a new session) after installing.
+
+To update later: `/plugin marketplace update teamwork`, then `/plugin update teamwork@teamwork`, then `/reload-plugins`.
 
 From a local checkout, without installing:
 

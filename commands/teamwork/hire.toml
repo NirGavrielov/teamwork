@@ -1,5 +1,8 @@
 description = "Define a new teamwork member from a description"
 prompt = """
-Activate the `hire` skill and follow it exactly, applying the Gemini CLI notes from the teamwork extension's context.
-Where the skill shows $ARGUMENTS, use this description: {{args}}
+Activate the `hire` skill and follow it exactly. Where it shows $ARGUMENTS, use this description: {{args}}
+
+The skill is written for Claude Code. On Gemini CLI read it this way:
+- Members: loaded members are the subagents whose description contains "teamwork member". Member files not loaded yet are `*.md` in `.gemini/agents/`, `~/.gemini/agents/` and `.claude/agents/`; run them through `generalist` with the skill's "read this file as your role" brief.
+- Save new members to `.gemini/agents/<name>.md` (project) or `~/.gemini/agents/<name>.md` (personal). Leave out `model` unless the user names a Gemini model; `tools` is a YAML list of Gemini tool names. New files load after `/agents reload`.
 """

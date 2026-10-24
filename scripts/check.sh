@@ -9,10 +9,12 @@ claude plugin validate --strict . || fail=1
 
 echo "== content checks"
 python3 - <<'PY' || fail=1
-import pathlib, re, sys
+import json, pathlib, re, sys
 
 MARKER = "teamwork member"
-LEFTOVERS = re.compile(r"<redacted>", re.I)
+# private names from the source project, kept out of the repo (gitignored); scan skipped without it
+leftovers = pathlib.Path("dev/leftovers.txt")
+LEFTOVERS = re.compile(leftovers.read_text().strip(), re.I) if leftovers.exists() else None
 errors = []
 
 def frontmatter(path):
@@ -58,11 +60,14 @@ listed = set(re.findall(r"^\| `([\w-]+)` \|", sec.group(1), re.M)) if sec else s
 if listed != {p.stem for p in agents}:
     errors.append(f"README built-in table {sorted(listed)} != agents/ {sorted(p.stem for p in agents)}")
 
-shipped = [pathlib.Path("README.md"), *pathlib.Path(".claude-plugin").glob("*.json"),
-           *[p for d in ("skills", "agents", "templates") for p in pathlib.Path(d).rglob("*") if p.is_file()]]
+versions = {str(p): json.loads(p.read_text())["version"] for p in (pathlib.Path(".claude-plugin/plugin.json"), pathlib.Path("gemini-extension.json"))}
+if len(set(versions.values())) != 1: errors.append(f"versions differ: {versions}")
+
+shipped = [pathlib.Path(p) for p in ("README.md", "GEMINI.md", "gemini-extension.json")] + [*pathlib.Path(".claude-plugin").glob("*.json"),
+           *[p for d in ("skills", "agents", "templates", "commands") for p in pathlib.Path(d).rglob("*") if p.is_file()]]
 for p in shipped:
     for n, line in enumerate(p.read_text().splitlines(), 1):
-        if LEFTOVERS.search(line): errors.append(f"{p}:{n}: leftover: {line.strip()[:80]}")
+        if LEFTOVERS and LEFTOVERS.search(line): errors.append(f"{p}:{n}: leftover: {line.strip()[:80]}")
 
 for e in errors: print("FAIL", e)
 print(f"{len(skills)} skills, {len(agents)} agents, {len(shipped)} shipped files checked")

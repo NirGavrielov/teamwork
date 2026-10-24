@@ -23,13 +23,13 @@ claude --plugin-dir /path/to/teamwork
 
 ### Gemini CLI
 
-The repo is also a Gemini CLI extension: `gemini-extension.json` loads the same skills and members, `commands/` adds the slash commands, and `GEMINI.md` maps the Claude Code terms in the skills to Gemini's tools (`generalist` for general-purpose subagents, `read_file` for Read, and so on).
+The repo is also a Gemini CLI extension: `gemini-extension.json` loads the same skills and members, and `commands/` adds the slash commands, whose prompts map the Claude Code terms in the skills to Gemini's (`generalist` for general-purpose subagents, `read_file` for Read, and so on). `GEMINI.md` holds one line: start teamwork only from these commands.
 
 ```
 gemini extensions install https://github.com/NirGavrielov/teamwork
 ```
 
-From a local checkout, `gemini extensions link /path/to/teamwork` keeps it in sync with your edits. Restart Gemini CLI after installing; update with `gemini extensions update teamwork`.
+The repository is private, so git needs GitHub credentials, as for Claude Code above (`gh auth setup-git`). From a local checkout, `gemini extensions link /path/to/teamwork` keeps it in sync with your edits. Restart Gemini CLI after installing; update with `gemini extensions update teamwork`.
 
 | Gemini command | Claude Code equivalent |
 | --- | --- |
@@ -48,8 +48,10 @@ The skills are plain `SKILL.md` files, so other agents that support skills and s
    ```
    git clone https://github.com/NirGavrielov/teamwork.git ~/teamwork
    mkdir -p ~/.agents/skills
-   cp -R ~/teamwork/skills/* ~/.agents/skills/
+   cp -Rn ~/teamwork/skills/* ~/.agents/skills/
    ```
+
+   The clone needs GitHub credentials (the repo is private; see above). `cp -n` never overwrites: if you already have a skill named `hire` or `team`, rename the folder and its `name:` first. On Windows (PowerShell): `Copy-Item -Recurse $HOME\teamwork\skills\* $HOME\.agents\skills\` (it overwrites, so check first).
 
    | Harness | Skills folder | Notes |
    | --- | --- | --- |
@@ -61,12 +63,14 @@ The skills are plain `SKILL.md` files, so other agents that support skills and s
 
    ```
    mkdir -p .claude/agents
-   cp ~/teamwork/agents/*.md .claude/agents/
+   cp -n ~/teamwork/agents/*.md .claude/agents/
    ```
+
+   On Windows (PowerShell): `New-Item -ItemType Directory -Force .claude\agents; Copy-Item $HOME\teamwork\agents\*.md .claude\agents\`.
 
    Members you add with `hire` land in the same folder.
 
-3. If your harness doesn't honor `disable-model-invocation`, it may start a job on its own when a request looks like teamwork. Say "don't use teamwork" when you don't want that. `GEMINI.md` shows how to map the Claude Code terms; a similar note in your harness's instructions file helps.
+3. If your harness doesn't honor `disable-model-invocation`, it may start a job on its own when a request looks like teamwork. Say "don't use teamwork" when you don't want that. The prompt in `commands/teamwork.toml` shows how to map the Claude Code terms; a similar note in your harness's instructions file helps.
 
 To update, `git pull` in `~/teamwork` and copy again.
 
@@ -135,7 +139,8 @@ Everything the team writes about the job goes under `.teamwork/` in your project
 .teamwork/jobs/<job-id>/      one directory per job; <job-id> is YYYY-MM-DD-<slug>, with -2, -3 if taken
   plan.md                     the lead's plan, with which files each task may change
   spec.md                     the product manager's spec, when there is one
-  logs/<member>.md            one work log per member, including team-lead
+  logs/<member>.md            one work log per member, including team-lead (<member>-<n>.md for parallel tasks)
+  bugs/<slug>.md              QA's bug reports, one per bug
 ```
 
 Members that run in parallel own separate files; tasks that would touch the same files run one after another. Code changes land in your project as usual. The team never commits or pushes unless you ask. Add `.teamwork/` to `.gitignore` if you don't want to keep the logs.
@@ -168,10 +173,7 @@ The final report: what was done, what was verified, what is open, and what needs
 
 ### Built with itself
 
-A record of the plugin's first build, done with `/teamwork`'s own flow; some details have changed since (team size handling, file layout). Lines that no longer apply are cut and marked "…"; the text that remains is unchanged. QA's first verdict was "Not ready" because of a real bug (bare `/teamwork` was not invokable), which was then fixed.
-
-![The team lead's brief to the product manager and its hand-back](docs/images/screenshot-team-lead-delegates.png)
-The lead briefs the product manager, who hands back a summary and the decisions it needs.
+A historical record of the plugin's first build, done with `/teamwork`'s own flow. Details have changed since (team size handling, file layout, and how members are marked: now the "Teamwork member" phrase in the description). Lines that no longer apply are cut and marked "…". QA's first verdict was "Not ready" because of a real bug (bare `/teamwork` was not invokable), which was then fixed.
 
 ![The product manager reading sources and writing the spec](docs/images/screenshot-product-manager.png)
 The product manager reads the source material and writes the spec.
@@ -205,6 +207,6 @@ Before sending a change, run:
 scripts/check.sh
 ```
 
-It runs `claude plugin validate --strict .`, then checks what that doesn't: the frontmatter of every skill and agent (required keys, `name` matching its file, the "Teamwork member" phrase in agent descriptions), that the template embedded in `skills/hire/SKILL.md` is identical to `templates/member-template.md`, that the README's built-in table lists exactly the agents in `agents/`, and that no leftovers from the project this plugin was extracted from remain. It needs only bash and python3, and exits non-zero on any failure.
+It runs `claude plugin validate --strict .`, then checks what that doesn't: the frontmatter of every skill and agent (required keys, `name` matching its file, the "Teamwork member" phrase in agent descriptions), that the template embedded in `skills/hire/SKILL.md` is identical to `templates/member-template.md`, that the README's built-in table lists exactly the agents in `agents/`, that `plugin.json` and `gemini-extension.json` have the same version, that frontmatter values containing `: ` are quoted, and (when the gitignored `dev/leftovers.txt` exists) that no names from the project this plugin was extracted from remain. It needs only bash and python3, and exits non-zero on any failure.
 
-For behavior changes (the skills, the size and roles rules, hire), also run the eval suite: 14 cases with `claude plugin eval`, about 90 seconds and about $1 per run. See [`evals/README.md`](evals/README.md).
+For behavior changes (the skills, the size and roles rules, hire), also run the eval suite: 20 cases with `claude plugin eval`, about 2 minutes and about $1.70 per run. See [`evals/README.md`](evals/README.md).

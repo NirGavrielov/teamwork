@@ -34,7 +34,7 @@ Work with whichever roles are on this job:
 - **<Role>:** <how you hand work to and from them.>
 
 ## Work log
-Log your work in `logs/<member-name>.md` in the job directory your brief names (`.teamwork/jobs/<job-id>/`). Create it if it doesn't exist; append to it as the work progresses and don't rewrite history.
+Log your work in the log file your brief names; create it if missing, append, and don't rewrite history.
 - Record: the task, what you did, the decisions you made and why, open questions, and the current status (in progress / blocked / done).
 
 ## Decision authority

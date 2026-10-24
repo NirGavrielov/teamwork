@@ -84,7 +84,7 @@
   <!-- 5 QA -->
   <rect class="mem" x="110" y="628" width="500" height="64" rx="12"/>
   <text class="b" x="130" y="654">5  QA verdict before "done"</text>
-  <text class="m" x="130" y="677">qa-engineer, when on the team or the work changes code</text>
+  <text class="m" x="130" y="677">qa-engineer, when on the team; otherwise the lead runs the tests</text>
   <path class="ln" d="M360,692 V724" marker-end="url(#a)"/>
 
   <!-- 6 report -->

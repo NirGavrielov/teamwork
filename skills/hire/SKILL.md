@@ -26,8 +26,8 @@ A member is any agent whose `description` contains the phrase "teamwork member" 
    - If the file already exists in the chosen location, do not overwrite it: ask for a different name or explicit permission to replace it.
    - If the name exists in the other location, warn that the two would shadow each other (a project file overrides a personal one) and ask whether to continue or rename.
 4. **Write the file from the template below.** Fill in every placeholder from the description:
-   - Frontmatter `name` equal to the file name, and a `description` in double quotes (it contains a colon) that starts with "Teamwork member (<role>):", says exactly what the member does and when the lead should use it, and ends with "Use only when delegated by the /teamwork team lead." Keep it to one or two sentences. Add `tools` or `model` only if the user asked.
-   - Keep every section of the template, in order, including `## Work log` (logging to `logs/<name>.md` in the job directory) and `## Decision authority` (decide alone / escalate / how to escalate with options, tradeoffs, and a recommendation).
+   - Frontmatter `name` equal to the file name, and a `description` in double quotes (it contains a colon; write any `"` inside it as `\"`) that starts with "Teamwork member (<role>):", says exactly what the member does and when the lead should use it, and ends with "Use only when delegated by the /teamwork team lead." Keep it to one or two sentences. Add `tools` or `model` only if the user asked.
+   - Keep every section of the template, in order, including `## Work log` (logging to the file the brief names) and `## Decision authority` (decide alone / escalate / how to escalate with options, tradeoffs, and a recommendation).
    - Write concrete, role-specific content: specific responsibilities, a real step-by-step process, named deliverables with formats and locations. No leftover `<placeholders>`, and remove the template's HTML comment.
    - Keep the line "Never commit or push unless the user has explicitly asked for it."
 5. **Report.** Print the file path and a three-line summary (what it owns, when the lead will pick it, what it produces). There is no roster limit: the lead only picks members with real work in a job, so a bigger roster doesn't add cost. Say that Claude Code loads new agent files when a session starts, so in this session the lead can still use the member by running a general-purpose agent told to read that file as its role, and in a new session it is available directly as an agent type. Mention `/teamwork:team` to see the full roster.
@@ -74,7 +74,7 @@ Work with whichever roles are on this job:
 - **<Role>:** <how you hand work to and from them.>
 
 ## Work log
-Log your work in `logs/<member-name>.md` in the job directory your brief names (`.teamwork/jobs/<job-id>/`). Create it if it doesn't exist; append to it as the work progresses and don't rewrite history.
+Log your work in the log file your brief names; create it if missing, append, and don't rewrite history.
 - Record: the task, what you did, the decisions you made and why, open questions, and the current status (in progress / blocked / done).
 
 ## Decision authority

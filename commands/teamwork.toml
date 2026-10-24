@@ -1,5 +1,11 @@
 description = "Start a teamwork job: you act as team lead, plan, delegate to expert subagents, verify, and report"
 prompt = """
-Activate the `teamwork` skill and follow it exactly, applying the Gemini CLI notes from the teamwork extension's context.
-Where the skill shows $ARGUMENTS, use this request: {{args}}
+Activate the `teamwork` skill and follow it exactly. Where it shows $ARGUMENTS, use this request: {{args}}
+
+The skill is written for Claude Code. On Gemini CLI read it this way:
+- Subagents: "the Agent tool" and `subagent_type: X` mean calling the subagent named X; `teamwork:<role>` means `<role>`; `general-purpose` means `generalist`. Call several subagents in one response for parallel tasks.
+- Members: loaded members are the subagents whose description contains "teamwork member". Member files not loaded yet are `*.md` in `.gemini/agents/`, `~/.gemini/agents/` and `.claude/agents/`; run them through `generalist` with the skill's "read this file as your role" brief.
+- Models: ignore `model` and the model table; each subagent uses its own model.
+- Tools: Read = read_file, Write = write_file, Edit = replace, Bash = run_shell_command, Grep = grep_search, Glob = glob, task lists = write_todos, asking the user = ask_user.
+- Reviews: `/code-review` and `/security-review` don't exist; review through a fresh subagent that didn't write the change (`privacy-security-reviewer` for security).
 """

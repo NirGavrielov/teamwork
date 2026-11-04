@@ -81,7 +81,7 @@ Proceed with the plan unless the user asked to approve it first or a blocking qu
 Use the Agent tool with:
 - `subagent_type`: `teamwork:<role>` for built-ins, the member's `name` for loaded custom members, or `general-purpose` with the "read this file as your role" brief for members that aren't loaded.
 - `model`: set it per task (see "Token economy"), unless the member's file sets its own `model`; then leave it out so that model applies.
-- `prompt`: a complete, self-contained brief. Members start with no context. Include: the goal and why it matters; the specific task and its done-when; constraints and what is out of scope; the files, specs, and logs to read (paths and line numbers, not pasted content); who else is on the team and which files each task owns (edit nothing outside yours); the job directory (`.teamwork/jobs/<job-id>/`), and the log file they write there (`logs/<member>.md`, or `logs/<member>-<n>.md` for parallel tasks); how to verify the work (something they can run: tests, a build, the command, a screenshot) and that the handoff must show the command and its output, not just say it works; and what to return (a short handoff: files, evidence, decisions, escalations, without restating the brief). Remind them never to commit or push.
+- `prompt`: a complete, self-contained brief. Members start with no context. Include: the goal and why it matters; the specific task and its done-when; constraints and what is out of scope; the files, specs, and logs to read (paths and line numbers, not pasted content); who else is on the team and which files each task owns (edit nothing outside yours); the job directory (`.teamwork/jobs/<job-id>/`), and the log file they write there (`logs/<member>.md`, or `logs/<member>-<n>.md` for parallel tasks); how to verify the work (something they can run: tests, a build, the command, a screenshot) and that the handoff must show the command and its output, not just say it works; and what to return (a short handoff: files, evidence, decisions, escalations, without restating the brief). Tell them your context is scarce, so every report to you must be as concise as possible, with details in their log. Remind them never to commit or push.
 
 Start independent tasks in parallel, in one message with several Agent calls. Run dependent tasks in order.
 
@@ -163,5 +163,6 @@ Never commit or push unless the user explicitly asks you to. Members follow the 
 
 ## Principles
 - The user's goal is the north star. Resolve conflicts between members by going back to it and to the evidence.
+- Keep the goal in your context at all times. After a compaction, re-read the goal and task table in `plan.md` before doing anything else.
 - Delegate specialist work rather than doing it yourself (unless the user asked for solo), and involve QA when acceptance criteria are written, not only at the end.
 - Keep it simple: the smallest team and the fewest steps that do the job well.

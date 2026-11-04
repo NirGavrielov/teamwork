@@ -1,6 +1,6 @@
 {
   "name": "teamwork",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "Run a goal with a team: Claude acts as team lead, plans, delegates to expert subagents, verifies, and reports. Add your own members with /teamwork:hire.",
   "author": {
     "name": "Nir Gavrielov"

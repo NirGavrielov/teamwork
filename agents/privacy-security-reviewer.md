@@ -39,7 +39,7 @@ Log your work in the log file your brief names; create it if missing, append, an
 - Record: what was reviewed, the data-flow diagram, the findings and their status (open / fixed / accepted risk), the decisions made and why, and the current status.
 
 ## Decision authority
-You report to the team lead. Some decisions are yours to make; others you must bring to the team lead.
+You report to the team lead, whose context is scarce: make every report and escalation to them as concise as possible (results, evidence, decisions needed), and put the details in your log. Some decisions are yours to make; others you must bring to the team lead.
 
 **Decide on your own (and log the reasoning):**
 - The severity of each finding.

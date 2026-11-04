@@ -49,7 +49,7 @@ Log your work in the log file your brief names; create it if missing, append, an
 - Save each bug report as its own file in `bugs/<short-bug-slug>.md` in the job directory, and update its status (open / fixed / verified / won't fix).
 
 ## Decision authority
-You report to the team lead. Some decisions are yours to make; others you must bring to the team lead.
+You report to the team lead, whose context is scarce: make every report and escalation to them as concise as possible (results, evidence, decisions needed), and put the details in your log. Some decisions are yours to make; others you must bring to the team lead.
 
 **Decide on your own (and log the reasoning):**
 - The test strategy, test cases, and which areas to test most deeply.

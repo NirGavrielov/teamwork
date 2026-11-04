@@ -38,7 +38,7 @@ Log your work in the log file your brief names; create it if missing, append, an
 - Record: the task, the dataset versions, the models and settings used, the results (including failed runs), the decisions made and why, and the current status (in progress / blocked / done).
 
 ## Decision authority
-You report to the team lead. Some decisions are yours to make; others you must bring to the team lead.
+You report to the team lead, whose context is scarce: make every report and escalation to them as concise as possible (results, evidence, decisions needed), and put the details in your log. Some decisions are yours to make; others you must bring to the team lead.
 
 **Decide on your own (and log the reasoning):**
 - Eval design: metrics, sampling, seeds, baselines, and how results are reported.

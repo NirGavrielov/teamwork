@@ -10,7 +10,7 @@ A Claude Code plugin that turns one assistant into a small team. Run `/teamwork 
 /reload-plugins
 ```
 
-The repo is private: you need read access, and git must clone it without a prompt (an SSH key, or `gh auth setup-git` and the HTTPS URL). Update with `/plugin marketplace update teamwork` and `/plugin update teamwork@teamwork`.
+Update with `/plugin marketplace update teamwork` and `/plugin update teamwork@teamwork`.
 
 Also works as a Gemini CLI extension: `gemini extensions install https://github.com/NirGavrielov/teamwork` (same commands). Other harnesses with skills and subagents can load `skills/` and `agents/` directly (experimental).
 

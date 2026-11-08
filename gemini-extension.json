@@ -1,6 +1,6 @@
 {
   "name": "teamwork",
-  "version": "0.5.1",
+  "version": "0.6.0",
   "description": "Run a goal with a team: the agent acts as team lead, plans, delegates to expert subagents, verifies, and reports.",
   "contextFileName": "GEMINI.md"
 }

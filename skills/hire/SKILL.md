@@ -20,9 +20,9 @@ Otherwise, define one new member. This only creates the member; it does not star
 A member is any agent whose `description` contains the phrase "teamwork member" (any case). The built-in members are the `teamwork:*` agent types; their descriptions say what each is for.
 
 1. **Check for overlap.** Compare the request with the members: the agent types the Agent tool offers whose description has the phrase, plus `*.md` files in `.claude/agents/` whose `description` has it. Checking `~/.claude/agents/` is best effort; don't ask for access to it. If an existing member already covers the requested work, say which one and ask whether to create the new member anyway. Wait for the answer.
-2. **Pick where to save.** If the user said where, use that. Otherwise ask once: project `.claude/agents/<name>.md` (the default; shared with the repo through git) or personal `~/.claude/agents/<name>.md`. If you can't ask (non-interactive run), use the project default and say so.
-3. **Pick a name and check it.** Kebab-case, short, describing the role (for example `technical-writer`).
-   - Refuse reserved names and ask for another: `team-lead`; a built-in member's name (any `teamwork:*` type without the prefix); Claude Code's own agent types (`general-purpose`, `Explore`, `Plan`, `claude-code-guide`, `statusline-setup`, `claude`); and any other agent type already offered in this session that isn't a file in the chosen location.
+2. **Pick where to save.** If the user said where, use that. Otherwise ask once: personal `~/.claude/agents/<name>.md` (the default; available in all your sessions on this device) or project `.claude/agents/<name>.md` (shared with the repo through git). If you can't ask (non-interactive run), use the personal default and say so.
+3. **Pick a name and check it.** `teamwork-` followed by a short kebab-case role (for example `teamwork-technical-writer`), so it shows with the teamwork label when it runs; add the prefix if the user's name lacks it.
+   - Refuse reserved roles (the part after `teamwork-`) and ask for another: `team-lead`; a built-in member's name (any `teamwork:*` type without the prefix); Claude Code's own agent types (`general-purpose`, `Explore`, `Plan`, `claude-code-guide`, `statusline-setup`, `claude`); and any other agent type already offered in this session that isn't a file in the chosen location.
    - If the file already exists in the chosen location, do not overwrite it: ask for a different name or explicit permission to replace it.
    - If the name exists in the other location, warn that the two would shadow each other (a project file overrides a personal one) and ask whether to continue or rename.
 4. **Write the file from the template below.** Fill in every placeholder from the description:
@@ -44,9 +44,9 @@ description: "Teamwork member (<role>): <the specific work this member owns, and
 ---
 <!--
 Teamwork custom-member template.
-Save as .claude/agents/<member-name>.md (project, shared through git) or
-~/.claude/agents/<member-name>.md (personal). <member-name> is kebab-case,
-unique, and matches the file name. Optional frontmatter: tools, model.
+Save as ~/.claude/agents/<member-name>.md (personal, all your sessions) or
+.claude/agents/<member-name>.md (project, shared through git). <member-name> is
+teamwork-<role> in kebab-case, unique, and matches the file name. Optional frontmatter: tools, model.
 The phrase "Teamwork member" in the description is what makes the team lead
 treat this agent as a member, so keep it. Delete this comment when you are done.
 -->

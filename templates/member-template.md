@@ -4,9 +4,9 @@ description: "Teamwork member (<role>): <the specific work this member owns, and
 ---
 <!--
 Teamwork custom-member template.
-Save as .claude/agents/<member-name>.md (project, shared through git) or
-~/.claude/agents/<member-name>.md (personal). <member-name> is kebab-case,
-unique, and matches the file name. Optional frontmatter: tools, model.
+Save as ~/.claude/agents/<member-name>.md (personal, all your sessions) or
+.claude/agents/<member-name>.md (project, shared through git). <member-name> is
+teamwork-<role> in kebab-case, unique, and matches the file name. Optional frontmatter: tools, model.
 The phrase "Teamwork member" in the description is what makes the team lead
 treat this agent as a member, so keep it. Delete this comment when you are done.
 -->
